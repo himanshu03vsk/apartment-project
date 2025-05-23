@@ -1,93 +1,82 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 const Building = require("./Building");
 
-@Entity("Fall24_S003_T5_FemaLetter")
-class FemaLetter {
-    @PrimaryColumn({
-        type: "varchar",
-        length: 20,
-        name: "Building_id"
-    })
-    buildingId;
-
-    @PrimaryColumn({
-        type: "varchar",
-        length: 20,
-        name: "Case_no"
-    })
-    caseNo;
-
-    @Column({
-        type: "integer",
-        name: "Lot_no",
-        nullable: true
-    })
-    lotNo;
-
-    @Column({
-        type: "integer",
-        name: "Block_no",
-        nullable: true
-    })
-    blockNo;
-
-    @Column({
-        type: "integer",
-        name: "Section_no",
-        nullable: true
-    })
-    sectionNo;
-
-    @Column({
-        type: "varchar",
-        length: 25,
-        name: "Subdivision",
-        nullable: true
-    })
-    subdivision;
-
-    @Column({
-        type: "varchar",
-        length: 25,
-        name: "Str_add",
-        nullable: true
-    })
-    strAdd;
-
-    @Column({
-        type: "varchar",
-        length: 10,
-        name: "flood_zone",
-        nullable: false
-    })
-    floodZone;
-
-    @Column({
-        type: "float",
-        name: "Base_flood_elev",
-        nullable: true
-    })
-    baseFloodElev;
-
-    @Column({
-        type: "float",
-        name: "Lowest_adj_grade_elev",
-        nullable: true
-    })
-    lowestAdjGradeElev;
-
-    @Column({
-        type: "float",
-        name: "Lowest_lot_elev",
-        nullable: true
-    })
-    lowestLotElev;
-
-    @ManyToOne(() => Building, building => building.femaLetters, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Building_id", referencedColumnName: "bid" })
-    building;
-}
+const FemaLetter = new EntitySchema({
+    name: "FemaLetter",
+    tableName: "FALL24_S003_T5_FEMALETTER",
+    columns: {
+        buildingId: {
+            primary: true,
+            type: "varchar",
+            length: 20,
+            name: "BUILDING_ID"
+        },
+        caseNo: {
+            primary: true,
+            type: "varchar",
+            length: 20,
+            name: "CASE_NO"
+        },
+        lotNo: {
+            type: "integer",
+            name: "LOT_NO",
+            nullable: true
+        },
+        blockNo: {
+            type: "integer",
+            name: "BLOCK_NO",
+            nullable: true
+        },
+        sectionNo: {
+            type: "integer",
+            name: "SECTION_NO",
+            nullable: true
+        },
+        subdivision: {
+            type: "varchar",
+            length: 25,
+            name: "SUBDIVISION",
+            nullable: true
+        },
+        strAdd: {
+            type: "varchar",
+            length: 25,
+            name: "STR_ADD",
+            nullable: true
+        },
+        floodZone: {
+            type: "varchar",
+            length: 10,
+            name: "FLOOD_ZONE",
+            nullable: false
+        },
+        baseFloodElev: {
+            type: "float",
+            name: "BASE_FLOOD_ELEV",
+            nullable: true
+        },
+        lowestAdjGradeElev: {
+            type: "float",
+            name: "LOWEST_ADJ_GRADE_ELEV",
+            nullable: true
+        },
+        lowestLotElev: {
+            type: "float",
+            name: "LOWEST_LOT_ELEV",
+            nullable: true
+        }
+    },
+    relations: {
+        building: {
+            type: "many-to-one",
+            target: "Building",
+            joinColumn: {
+                name: "BUILDING_ID",
+                referencedColumnName: "bid"
+            },
+            onDelete: "CASCADE"
+        }
+    }
+});
 
 module.exports = FemaLetter;

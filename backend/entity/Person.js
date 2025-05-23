@@ -1,88 +1,82 @@
-const { Entity, Column, PrimaryColumn, OneToMany } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_Person")
-class Person {
-    @PrimaryColumn({
-        type: "char",
-        length: 9,
-        name: "Ssn"
-    })
-    ssn;
-
-    @Column({
-        type: "varchar",
-        length: 20,
-        name: "Fname",
-        nullable: false
-    })
-    fname;
-
-    @Column({
-        type: "char",
-        length: 1,
-        name: "Minit",
-        nullable: true
-    })
-    minit;
-
-    @Column({
-        type: "varchar",
-        length: 20,
-        name: "Lname",
-        nullable: false
-    })
-    lname;
-
-    @Column({
-        type: "date",
-        name: "Date_of_birth",
-        nullable: false
-    })
-    dateOfBirth;
-
-    @Column({
-        type: "varchar",
-        length: 20,
-        name: "Gender",
-        nullable: false,
-        enum: ['Male', 'Female', 'Prefer not to say']
-    })
-    gender;
-
-    @Column({
-        type: "varchar",
-        length: 20,
-        name: "Ethnicity",
-        nullable: true
-    })
-    ethnicity;
-
-    @Column({
-        type: "char",
-        length: 10,
-        name: "Contact",
-        nullable: false
-    })
-    contact;
-
-    @Column({
-        type: "varchar",
-        length: 10,
-        name: "Marital_status",
-        nullable: false,
-        enum: ['Married', 'Single', 'Divorced', 'Widowed']
-    })
-    maritalStatus;
-
-    // Relationships will be defined in related entities
-    @OneToMany(() => Applicant, applicant => applicant.person)
-    applicants;
-
-    @OneToMany(() => Employee, employee => employee.person)
-    employees;
-
-    @OneToMany(() => Resident, resident => resident.person)
-    residents;
-}
+const Person = new EntitySchema({
+    name: "Person",
+    tableName: "FALL24_S003_T5_PERSON",
+    columns: {
+        ssn: {
+            primary: true,
+            type: "char",
+            length: 9,
+            name: "SSN"
+        },
+        fname: {
+            type: "varchar",
+            length: 20,
+            name: "FNAME",
+            nullable: false
+        },
+        minit: {
+            type: "char",
+            length: 1,
+            name: "MINIT",
+            nullable: true
+        },
+        lname: {
+            type: "varchar",
+            length: 20,
+            name: "LNAME",
+            nullable: false
+        },
+        dateOfBirth: {
+            type: "date",
+            name: "DATE_OF_BIRTH",
+            nullable: false
+        },
+        gender: {
+            type: "varchar",
+            length: 20,
+            name: "GENDER",
+            nullable: false,
+            enum: ['Male', 'Female', 'Prefer not to say']
+        },
+        ethnicity: {
+            type: "varchar",
+            length: 20,
+            name: "ETHNICITY",
+            nullable: true
+        },
+        contact: {
+            type: "char",
+            length: 10,
+            name: "CONTACT",
+            nullable: false
+        },
+        maritalStatus: {
+            type: "varchar",
+            length: 10,
+            name: "MARITAL_STATUS",
+            nullable: false,
+            enum: ['Married', 'Single', 'Divorced', 'Widowed']
+        }
+    },
+    relations: {
+        applicants: {
+            type: "one-to-many",
+            target: "Applicant",
+            inverseSide: "person"
+        },
+        employees: {
+            type: "one-to-many",
+            target: "Employee",
+            inverseSide: "person"
+        },
+        residents: {
+            type: "one-to-many",
+            target: "Resident",
+            inverseSide: "person"
+        }
+    }
+});
 
 module.exports = Person; 

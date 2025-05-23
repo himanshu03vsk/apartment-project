@@ -1,69 +1,67 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 const MaintenanceStaff = require("./MaintenanceStaff");
 const Resident = require("./Resident");
 const MaintenanceTicket = require("./MaintenanceTicket");
 
-@Entity("Fall24_S003_T5_WorksOn")
-class WorksOn {
-    @Column({
-        type: "varchar",
-        length: 30,
-        name: "Ticket_apt_id",
-        nullable: false
-    })
-    ticketAptId;
-
-    @PrimaryColumn({
-        type: "integer",
-        name: "Ticket_no"
-    })
-    ticketNo;
-
-    @PrimaryColumn({
-        type: "char",
-        length: 9,
-        name: "Worker_ssn"
-    })
-    workerSsn;
-
-    @PrimaryColumn({
-        type: "char",
-        length: 9,
-        name: "Resident_ssn"
-    })
-    residentSsn;
-
-    @Column({
-        type: "date",
-        name: "Date_submitted",
-        nullable: false
-    })
-    dateSubmitted;
-
-    @ManyToOne(() => MaintenanceStaff, maintenanceStaff => maintenanceStaff.worksOnTickets, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn([
-        { name: "Worker_ssn", referencedColumnName: "maintenanceEmpSsn" },
-        { name: "Date_submitted", referencedColumnName: "shiftDate" }
-    ])
-    maintenanceStaff;
-
-    @ManyToOne(() => Resident, resident => resident.maintenanceWork, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Resident_ssn", referencedColumnName: "resSsn" })
-    resident;
-
-    @ManyToOne(() => MaintenanceTicket, maintenanceTicket => maintenanceTicket.worksOnStaff, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn([
-        { name: "Ticket_apt_id", referencedColumnName: "aptId" },
-        { name: "Resident_ssn", referencedColumnName: "residentSsn" },
-        { name: "Ticket_no", referencedColumnName: "ticketNo" }
-    ])
-    maintenanceTicket;
-}
+const WorksOn = new EntitySchema({
+    name: "WorksOn",
+    tableName: "FALL24_S003_T5_WORKSON",
+    columns: {
+        maintenanceEmpSsn: {
+            primary: true,
+            type: "char",
+            length: 9,
+            name: "MAINTENANCE_EMP_SSN"
+        },
+        shiftDate: {
+            primary: true,
+            type: "date",
+            name: "SHIFT_DATE"
+        },
+        aptId: {
+            primary: true,
+            type: "varchar",
+            length: 30,
+            name: "APT_ID"
+        },
+        residentSsn: {
+            primary: true,
+            type: "char",
+            length: 9,
+            name: "RESIDENT_SSN"
+        },
+        ticketNo: {
+            primary: true,
+            type: "integer",
+            name: "TICKET_NO"
+        },
+        hoursWorked: {
+            type: "float",
+            name: "HOURS_WORKED",
+            nullable: false
+        }
+    },
+    relations: {
+        maintenanceStaff: {
+            type: "many-to-one",
+            target: "MaintenanceStaff",
+            joinColumn: [
+                { name: "MAINTENANCE_EMP_SSN", referencedColumnName: "maintenanceEmpSsn" },
+                { name: "SHIFT_DATE", referencedColumnName: "shiftDate" }
+            ],
+            onDelete: "CASCADE"
+        },
+        maintenanceTicket: {
+            type: "many-to-one",
+            target: "MaintenanceTicket",
+            joinColumn: [
+                { name: "APT_ID", referencedColumnName: "aptId" },
+                { name: "RESIDENT_SSN", referencedColumnName: "residentSsn" },
+                { name: "TICKET_NO", referencedColumnName: "ticketNo" }
+            ],
+            onDelete: "CASCADE"
+        }
+    }
+});
 
 module.exports = WorksOn; 

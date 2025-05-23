@@ -1,104 +1,96 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, OneToMany, JoinColumn } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 const Building = require("./Building");
 
-@Entity("Fall24_S003_T5_Apartment")
-class Apartment {
-    @PrimaryColumn({
-        type: "varchar",
-        length: 30,
-        name: "Aid",
-        generated: "ALWAYS"
-    })
-    aid;
-
-    @Column({
-        type: "integer",
-        name: "Apt_no",
-        nullable: false
-    })
-    aptNo;
-
-    @Column({
-        type: "integer",
-        name: "Floor_no",
-        nullable: false
-    })
-    floorNo;
-
-    @Column({
-        type: "integer",
-        name: "Num_of_bedrooms",
-        nullable: false
-    })
-    numOfBedrooms;
-
-    @Column({
-        type: "integer",
-        name: "Num_of_bathrooms",
-        nullable: false
-    })
-    numOfBathrooms;
-
-    @Column({
-        type: "float",
-        name: "Total_sqft",
-        nullable: false
-    })
-    totalSqft;
-
-    @Column({
-        type: "char",
-        length: 1,
-        name: "Pet_friendly",
-        nullable: false,
-        enum: ['Y', 'N']
-    })
-    petFriendly;
-
-    @Column({
-        type: "char",
-        length: 1,
-        name: "Smoking",
-        nullable: false,
-        enum: ['Y', 'N']
-    })
-    smoking;
-
-    @Column({
-        type: "char",
-        length: 1,
-        name: "Furnished",
-        nullable: false,
-        enum: ['Y', 'N']
-    })
-    furnished;
-
-    @Column({
-        type: "integer",
-        name: "Rent",
-        nullable: false
-    })
-    rent;
-
-    @Column({
-        type: "varchar",
-        length: 20,
-        name: "Building_id",
-        nullable: false
-    })
-    buildingId;
-
-    @ManyToOne(() => Building, building => building.apartments, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Building_id", referencedColumnName: "bid" })
-    building;
-
-    @OneToMany(() => Resident, resident => resident.apartment)
-    residents;
-
-    @OneToMany(() => MaintenanceTicket, maintenanceTicket => maintenanceTicket.apartment)
-    maintenanceTickets;
-}
+const Apartment = new EntitySchema({
+    name: "Apartment",
+    tableName: "FALL24_S003_T5_APARTMENT",
+    columns: {
+        aid: {
+            primary: true,
+            type: "varchar",
+            length: 30,
+            name: "AID",
+            generated: "ALWAYS"
+        },
+        aptNo: {
+            type: "integer",
+            name: "APT_NO",
+            nullable: false
+        },
+        floorNo: {
+            type: "integer",
+            name: "FLOOR_NO",
+            nullable: false
+        },
+        numOfBedrooms: {
+            type: "integer",
+            name: "NUM_OF_BEDROOMS",
+            nullable: false
+        },
+        numOfBathrooms: {
+            type: "integer",
+            name: "NUM_OF_BATHROOMS",
+            nullable: false
+        },
+        totalSqft: {
+            type: "float",
+            name: "TOTAL_SQFT",
+            nullable: false
+        },
+        petFriendly: {
+            type: "char",
+            length: 1,
+            name: "PET_FRIENDLY",
+            nullable: false,
+            enum: ['Y', 'N']
+        },
+        smoking: {
+            type: "char",
+            length: 1,
+            name: "SMOKING",
+            nullable: false,
+            enum: ['Y', 'N']
+        },
+        furnished: {
+            type: "char",
+            length: 1,
+            name: "FURNISHED",
+            nullable: false,
+            enum: ['Y', 'N']
+        },
+        rent: {
+            type: "integer",
+            name: "RENT",
+            nullable: false
+        },
+        buildingId: {
+            type: "varchar",
+            length: 20,
+            name: "BUILDING_ID",
+            nullable: false
+        }
+    },
+    relations: {
+        building: {
+            type: "many-to-one",
+            target: "Building",
+            joinColumn: {
+                name: "BUILDING_ID",
+                referencedColumnName: "bid"
+            },
+            onDelete: "CASCADE"
+        },
+        residents: {
+            type: "one-to-many",
+            target: "Resident",
+            inverseSide: "apartment"
+        },
+        maintenanceTickets: {
+            type: "one-to-many",
+            target: "MaintenanceTicket",
+            inverseSide: "apartment"
+        }
+    }
+});
 
 module.exports = Apartment;

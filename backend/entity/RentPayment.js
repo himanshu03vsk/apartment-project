@@ -1,32 +1,52 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } = require("typeorm");
-const Resident = require("./Resident");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_RentPayment")
-class RentPayment {
-    @PrimaryColumn({
-        type: "char",
-        length: 9,
-        name: "Resident_ssn"
-    })
-    residentSsn;
-
-    @PrimaryColumn({
-        type: "date",
-        name: "Due_date"
-    })
-    dueDate;
-
-    @PrimaryColumn({
-        type: "date",
-        name: "Date_paid"
-    })
-    datePaid;
-
-    @ManyToOne(() => Resident, resident => resident.rentPayments, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Resident_ssn", referencedColumnName: "resSsn" })
-    resident;
-}
+const RentPayment = new EntitySchema({
+    name: "RentPayment",
+    tableName: "FALL24_S003_T5_RENTPAYMENT",
+    columns: {
+        aptId: {
+            primary: true,
+            type: "varchar",
+            length: 30,
+            name: "APT_ID"
+        },
+        residentSsn: {
+            primary: true,
+            type: "char",
+            length: 9,
+            name: "RESIDENT_SSN"
+        },
+        paymentDate: {
+            primary: true,
+            type: "date",
+            name: "PAYMENT_DATE"
+        },
+        paymentAmount: {
+            type: "float",
+            name: "PAYMENT_AMOUNT",
+            nullable: false
+        }
+    },
+    relations: {
+        resident: {
+            type: "many-to-one",
+            target: "Resident",
+            joinColumn: {
+                name: "RESIDENT_SSN",
+                referencedColumnName: "resSsn"
+            },
+            onDelete: "CASCADE"
+        },
+        apartment: {
+            type: "many-to-one",
+            target: "Apartment",
+            joinColumn: {
+                name: "APT_ID",
+                referencedColumnName: "aid"
+            },
+            onDelete: "CASCADE"
+        }
+    }
+});
 
 module.exports = RentPayment;

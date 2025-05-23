@@ -1,35 +1,39 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } = require("typeorm");
-const Employee = require("./Employee");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_OfficeWorker")
-class OfficeWorker {
-    @PrimaryColumn({
-        type: "char",
-        length: 9,
-        name: "Office_emp_ssn"
-    })
-    officeEmpSsn;
-
-    @PrimaryColumn({
-        type: "date",
-        name: "Shift_date"
-    })
-    shiftDate;
-
-    @Column({
-        type: "varchar",
-        length: 20,
-        name: "Shift",
-        nullable: false,
-        enum: ['Morning', 'Afternoon', 'Evening', 'On-Call']
-    })
-    shift;
-
-    @ManyToOne(() => Employee, employee => employee.officeWorkers, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Office_emp_ssn", referencedColumnName: "empSsn" })
-    employee;
-}
+const OfficeWorker = new EntitySchema({
+    name: "OfficeWorker",
+    tableName: "FALL24_S003_T5_OFFICEWORKER",
+    columns: {
+        officeEmpSsn: {
+            primary: true,
+            type: "char",
+            length: 9,
+            name: "OFFICE_EMP_SSN"
+        },
+        shiftDate: {
+            primary: true,
+            type: "date",
+            name: "SHIFT_DATE"
+        },
+        shift: {
+            type: "varchar",
+            length: 20,
+            name: "SHIFT",
+            nullable: false,
+            enum: ['Morning', 'Afternoon', 'Evening', 'On-Call']
+        }
+    },
+    relations: {
+        employee: {
+            type: "many-to-one",
+            target: "Employee",
+            joinColumn: {
+                name: "OFFICE_EMP_SSN",
+                referencedColumnName: "empSsn"
+            },
+            onDelete: "CASCADE"
+        }
+    }
+});
 
 module.exports = OfficeWorker;

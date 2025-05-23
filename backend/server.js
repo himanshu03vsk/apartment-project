@@ -33,39 +33,52 @@
 // server.js (GraphQL version)
 const express = require('express');
 const cors = require('cors');
+const { json } = require('body-parser');
 require('dotenv').config();
-const { ApolloServer } = require('apollo-server-express'); // <--- New: Apollo Server
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
 
 const { AppDataSource } = require('./config/data-source');
 // You'll create these files:
-const typeDefs = require('./graphql/schema');         // <--- New: GraphQL Schema
-const resolvers = require('./graphql/resolvers');     // <--- New: GraphQL Resolvers
+const typeDefs = require('./graphql/schemas/index');         // <--- New: GraphQL Schema
+const resolvers = require('./graphql/resolvers/index');     // <--- New: GraphQL Resolvers
 // const userRoutes = require('./routes/userRoutes'); // <--- This would be largely replaced by resolvers
 
-const app = express();
-app.use(cors());
-app.use(express.json()); // Still useful if you have any REST endpoints or for Apollo Server itself
-
 async function startServer() {
-  // DB Initialization
+  const app = express();
+  
   try {
+    // Initialize DB
     await AppDataSource.initialize();
     console.log('✅ Oracle connected via TypeORM');
 
     // Create Apollo Server instance
     const server = new ApolloServer({
-      typeDefs,  // Your GraphQL schema
-      resolvers, // Your functions that fetch the data for your schema
-      // You can add context here to make AppDataSource available to all resolvers
-      // context: () => ({ db: AppDataSource })
-      // This helps avoid importing AppDataSource in every resolver file.
+      typeDefs,
+      resolvers,
+      // Optional: Add formatError to customize error responses
+      formatError: (error) => {
+        console.error(error);
+        return error;
+      },
     });
 
-    // Start the Apollo Server before applying middleware
+    // Start the Apollo Server
     await server.start();
 
-    // Apply Apollo GraphQL middleware and set path to /graphql
-    server.applyMiddleware({ app, path: '/graphql' }); // <--- New: GraphQL endpoint
+    // Apply middleware
+    app.use(
+      '/graphql',
+      cors(),
+      json(),
+      expressMiddleware(server, {
+        context: async ({ req }) => ({
+          // Add any context you want available in resolvers
+          db: AppDataSource,
+          // You can add user authentication here if needed
+        }),
+      })
+    );
 
     // If you still want your old REST routes for some reason (e.g., migration period)
     // you could keep them, but typically GraphQL would handle this data.
@@ -74,11 +87,12 @@ async function startServer() {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`🚀 Server running at http://localhost:${PORT}`);
-      console.log(`🚀 GraphQL endpoint ready at http://localhost:${PORT}${server.graphqlPath}`);
+      console.log(`🚀 GraphQL endpoint ready at http://localhost:${PORT}/graphql`);
     });
 
   } catch (err) {
     console.error('❌ Oracle DB connection failed or Server setup failed:', err);
+    process.exit(1);
   }
 }
 

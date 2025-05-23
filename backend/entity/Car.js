@@ -1,55 +1,56 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, OneToMany, JoinColumn } = require("typeorm");
-const Resident = require("./Resident");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_Car")
-class Car {
-    @PrimaryColumn({
-        type: "varchar",
-        length: 8,
-        name: "License_plate"
-    })
-    licensePlate;
-
-    @Column({
-        type: "varchar",
-        length: 25,
-        name: "Make",
-        nullable: true
-    })
-    make;
-
-    @Column({
-        type: "varchar",
-        length: 25,
-        name: "Model",
-        nullable: true
-    })
-    model;
-
-    @Column({
-        type: "char",
-        length: 4,
-        name: "Year",
-        nullable: true
-    })
-    year;
-
-    @Column({
-        type: "char",
-        length: 9,
-        name: "Resident_ssn",
-        nullable: false
-    })
-    residentSsn;
-
-    @ManyToOne(() => Resident, resident => resident.cars, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Resident_ssn", referencedColumnName: "resSsn" })
-    resident;
-
-    @OneToMany(() => ParkingPermit, parkingPermit => parkingPermit.car)
-    parkingPermits;
-}
+const Car = new EntitySchema({
+    name: "Car",
+    tableName: "FALL24_S003_T5_CAR",
+    columns: {
+        licensePlate: {
+            primary: true,
+            type: "varchar",
+            length: 8,
+            name: "LICENSE_PLATE"
+        },
+        make: {
+            type: "varchar",
+            length: 25,
+            name: "MAKE",
+            nullable: true
+        },
+        model: {
+            type: "varchar",
+            length: 25,
+            name: "MODEL",
+            nullable: true
+        },
+        year: {
+            type: "char",
+            length: 4,
+            name: "YEAR",
+            nullable: true
+        },
+        residentSsn: {
+            type: "char",
+            length: 9,
+            name: "RESIDENT_SSN",
+            nullable: false
+        }
+    },
+    relations: {
+        resident: {
+            type: "many-to-one",
+            target: "Resident",
+            joinColumn: {
+                name: "RESIDENT_SSN",
+                referencedColumnName: "resSsn"
+            },
+            onDelete: "CASCADE"
+        },
+        parkingPermits: {
+            type: "one-to-many",
+            target: "ParkingPermit",
+            inverseSide: "car"
+        }
+    }
+});
 
 module.exports = Car;

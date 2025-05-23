@@ -7,10 +7,18 @@ const AppDataSource = new DataSource({
   port: 1521,
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  serviceName: process.env.SERVICE_NAME || 'APT_DB', // or use `serviceName`
+  serviceName: process.env.SERVICE_NAME || 'APT_DB',
   synchronize: false,
   logging: true,
-  entities: [require('../entity/User')],
+  entitySkipConstructor: true,
+  formatOptions: {
+    castParameters: false,
+    enableQualifiedNames: false
+  },
+  entities: [
+    require('../entity/Amenity'),
+    require('../entity/User')
+  ],
 });
 
 module.exports = { AppDataSource };

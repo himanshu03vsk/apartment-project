@@ -1,15 +1,20 @@
-const { Entity, Column, PrimaryColumn } = require("typeorm");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_Amenity")
-class Amenity {
-    @PrimaryColumn({
-        type: "varchar",
-        length: 100,
-        name: "Amenity_type"
-    })
-    amenityType;
-
-    // You might want to add methods or additional properties here
-}
+const Amenity = new EntitySchema({
+    name: "Amenity",
+    tableName: "FALL24_S003_T5_AMENITY",
+    schema: "",
+    synchronize: false,
+    quoted: false,
+    columns: {
+        amenityType: {
+            primary: true,
+            type: "varchar",
+            length: 100,
+            name: "AMENITY_TYPE",
+            quoted: false
+        }
+    }
+});
 
 module.exports = Amenity;

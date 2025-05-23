@@ -1,55 +1,57 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } = require("typeorm");
-const Complex = require("./Complex");
-const Applicant = require("./Applicant");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_AppliesTo")
-class AppliesTo {
-    @PrimaryColumn({
-        type: "char",
-        length: 12,
-        name: "Complex_id"
-    })
-    complexId;
-
-    @PrimaryColumn({
-        type: "char",
-        length: 9,
-        name: "App_ssn"
-    })
-    appSsn;
-
-    @Column({
-        type: "integer",
-        name: "Num_of_bedrooms",
-        nullable: false
-    })
-    numOfBedrooms;
-
-    @Column({
-        type: "integer",
-        name: "Num_of_bathrooms",
-        nullable: false
-    })
-    numOfBathrooms;
-
-    @Column({
-        type: "date",
-        name: "Applied_date",
-        nullable: false
-    })
-    appliedDate;
-
-    @ManyToOne(() => Complex, complex => complex.applications, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Complex_id", referencedColumnName: "cid" })
-    complex;
-
-    @ManyToOne(() => Applicant, applicant => applicant.applications, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "App_ssn", referencedColumnName: "applicantSsn" })
-    applicant;
-}
+const AppliesTo = new EntitySchema({
+    name: "AppliesTo",
+    tableName: "FALL24_S003_T5_APPLIESTO",
+    columns: {
+        complexId: {
+            primary: true,
+            type: "char",
+            length: 12,
+            name: "COMPLEX_ID"
+        },
+        appSsn: {
+            primary: true,
+            type: "char",
+            length: 9,
+            name: "APP_SSN"
+        },
+        numOfBedrooms: {
+            type: "integer",
+            name: "NUM_OF_BEDROOMS",
+            nullable: false
+        },
+        numOfBathrooms: {
+            type: "integer",
+            name: "NUM_OF_BATHROOMS",
+            nullable: false
+        },
+        appliedDate: {
+            type: "date",
+            name: "APPLIED_DATE",
+            nullable: false
+        }
+    },
+    relations: {
+        complex: {
+            type: "many-to-one",
+            target: "Complex",
+            joinColumn: {
+                name: "COMPLEX_ID",
+                referencedColumnName: "cid"
+            },
+            onDelete: "CASCADE"
+        },
+        applicant: {
+            type: "many-to-one",
+            target: "Applicant",
+            joinColumn: {
+                name: "APP_SSN",
+                referencedColumnName: "applicantSsn"
+            },
+            onDelete: "CASCADE"
+        }
+    }
+});
 
 module.exports = AppliesTo;

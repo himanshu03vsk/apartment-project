@@ -1,50 +1,54 @@
-const { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } = require("typeorm");
-const Complex = require("./Complex");
-const Amenity = require("./Amenity");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_Provides")
-class Provides {
-    @PrimaryColumn({
-        type: "char",
-        length: 12,
-        name: "Complex_id"
-    })
-    complexId;
-
-    @PrimaryColumn({
-        type: "varchar",
-        length: 100,
-        name: "Amen_type"
-    })
-    amenType;
-
-    @Column({
-        type: "char",
-        length: 10,
-        name: "Quantity",
-        nullable: true
-    })
-    quantity;
-
-    @Column({
-        type: "varchar",
-        length: 100,
-        name: "Description",
-        nullable: false
-    })
-    description;
-
-    @ManyToOne(() => Complex, complex => complex.amenities, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Complex_id", referencedColumnName: "cid" })
-    complex;
-
-    @ManyToOne(() => Amenity, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Amen_type", referencedColumnName: "amenityType" })
-    amenity;
-}
+const Provides = new EntitySchema({
+    name: "Provides",
+    tableName: "FALL24_S003_T5_PROVIDES",
+    columns: {
+        complexId: {
+            primary: true,
+            type: "char",
+            length: 12,
+            name: "COMPLEX_ID"
+        },
+        amenType: {
+            primary: true,
+            type: "varchar",
+            length: 100,
+            name: "AMEN_TYPE"
+        },
+        quantity: {
+            type: "char",
+            length: 10,
+            name: "QUANTITY",
+            nullable: true
+        },
+        description: {
+            type: "varchar",
+            length: 100,
+            name: "DESCRIPTION",
+            nullable: false
+        }
+    },
+    relations: {
+        complex: {
+            type: "many-to-one",
+            target: "Complex",
+            joinColumn: {
+                name: "COMPLEX_ID",
+                referencedColumnName: "cid"
+            },
+            onDelete: "CASCADE"
+        },
+        amenity: {
+            type: "many-to-one",
+            target: "Amenity",
+            joinColumn: {
+                name: "AMEN_TYPE",
+                referencedColumnName: "amenityType"
+            },
+            onDelete: "CASCADE"
+        }
+    }
+});
 
 module.exports = Provides;

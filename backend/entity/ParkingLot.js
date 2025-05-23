@@ -1,30 +1,38 @@
-const { Entity, PrimaryColumn, ManyToOne, OneToMany, JoinColumn } = require("typeorm");
-const Complex = require("./Complex");
+const { EntitySchema } = require("typeorm");
 
-@Entity("Fall24_S003_T5_ParkingLot")
-class ParkingLot {
-    @PrimaryColumn({
-        type: "char",
-        length: 1,
-        name: "Lot_no"
-    })
-    lotNo;
-
-    @PrimaryColumn({
-        type: "char",
-        length: 12,
-        name: "Complex_id"
-    })
-    complexId;
-
-    @ManyToOne(() => Complex, complex => complex.parkingLots, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "Complex_id", referencedColumnName: "cid" })
-    complex;
-
-    @OneToMany(() => ParkingSpot, parkingSpot => parkingSpot.parkingLot)
-    parkingSpots;
-}
+const ParkingLot = new EntitySchema({
+    name: "ParkingLot",
+    tableName: "FALL24_S003_T5_PARKINGLOT",
+    columns: {
+        lotNo: {
+            primary: true,
+            type: "char",
+            length: 1,
+            name: "LOT_NO"
+        },
+        complexId: {
+            primary: true,
+            type: "char",
+            length: 12,
+            name: "COMPLEX_ID"
+        }
+    },
+    relations: {
+        complex: {
+            type: "many-to-one",
+            target: "Complex",
+            joinColumn: {
+                name: "COMPLEX_ID",
+                referencedColumnName: "cid"
+            },
+            onDelete: "CASCADE"
+        },
+        parkingSpots: {
+            type: "one-to-many",
+            target: "ParkingSpot",
+            inverseSide: "parkingLot"
+        }
+    }
+});
 
 module.exports = ParkingLot;
