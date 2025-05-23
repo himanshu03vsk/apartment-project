@@ -1,0 +1,234 @@
+<div _ngcontent-ng-c1963131789="" class="response-content ng-tns-c1297390392-29"><model-thoughts _ngcontent-ng-c1963131789="" _nghost-ng-c3600188002="" class="ng-tns-c3600188002-30 ng-star-inserted" style="height: auto;"><div _ngcontent-ng-c3600188002="" class="model-thoughts ng-tns-c3600188002-30"><div _ngcontent-ng-c3600188002="" class="thoughts-header ng-tns-c3600188002-30"><button _ngcontent-ng-c3600188002="" mat-button="" data-test-id="thoughts-header-button" class="mdc-button mat-mdc-button-base thoughts-header-button ng-tns-c3600188002-30 mat-mdc-button mat-unthemed" mat-ripple-loader-class-name="mat-mdc-button-ripple" jslog="247951;track:generic_click,impression"><span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span class="mdc-button__label"><div _ngcontent-ng-c3600188002="" class="thoughts-header-button-content"><div _ngcontent-ng-c3600188002="" class="thoughts-header-button-label ng-tns-c3600188002-30"><span _ngcontent-ng-c3600188002="" class="ng-tns-c3600188002-30">Show thinking</span></div><div _ngcontent-ng-c3600188002="" class="thoughts-header-button-icons ng-tns-c3600188002-30"><!----><mat-icon _ngcontent-ng-c3600188002="" role="img" fonticon="expand_more" class="mat-icon notranslate thoughts-header-button-icon ng-tns-c3600188002-30 google-symbols mat-ligature-font mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="expand_more"></mat-icon><!----></div></div></span><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span></button></div><!----></div></model-thoughts><!----><!----><!----><message-content _ngcontent-ng-c1963131789="" class="model-response-text has-thoughts ng-star-inserted" _nghost-ng-c34882000="" id="message-content-id-r_81ee9ac4988ee10f" style="height: auto;"><div _ngcontent-ng-c34882000="" class="markdown markdown-main-panel tutor-markdown-rendering stronger enable-updated-hr-color" style="--animation-duration: 600ms; --fade-animation-function: linear;" id="model-response-message-contentr_81ee9ac4988ee10f" dir="ltr"><p data-sourcepos="1:1-1:172">That's an <strong>excellent decision</strong> and a highly recommended best practice, especially for applications with a significant number of CRUD operations and distinct data domains.</p><p data-sourcepos="3:1-3:100">Using modular schemas (type definitions) and modular resolvers will make your GraphQL API much more:</p><ul data-sourcepos="5:1-10:0">
+<li data-sourcepos="5:1-5:106"><strong>Maintainable:</strong> Easier to find and update specific parts of your API without navigating massive files.</li>
+<li data-sourcepos="6:1-6:73"><strong>Scalable:</strong> Simpler to add new features or domains without conflicts.</li>
+<li data-sourcepos="7:1-7:69"><strong>Readable:</strong> Code becomes more organized and easier to understand.</li>
+<li data-sourcepos="8:1-8:70"><strong>Testable:</strong> Smaller, focused modules are generally easier to test.</li>
+<li data-sourcepos="9:1-10:0"><strong>Team-Friendly:</strong> Different team members can work on different modules with less chance of stepping on each other's toes.</li>
+</ul><p data-sourcepos="11:1-11:83">Here's how you can typically structure and implement modular schemas and resolvers:</p><p data-sourcepos="13:1-13:41"><strong>I. Modular Type Definitions (Schemas)</strong></p><p data-sourcepos="15:1-15:93">You'll break down your schema into smaller files, usually based on the data entity or domain.</p><ol data-sourcepos="17:1-115:0">
+<li data-sourcepos="17:1-30:0">
+<p data-sourcepos="17:5-17:28"><strong>Directory Structure:</strong></p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-119 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-119 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-119"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-119"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-119"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-119 no-decoration-radius" data-sourcepos="18:5-29:11">src/
+├── graphql/
+│   ├── schemas/                 # Directory for modular schema parts
+│   │   ├── user.schema.js
+│   │   ├── post.schema.js
+│   │   ├── comment.schema.js
+│   │   └── index.js             # To combine all schema parts
+│   ├── resolvers/               # (Your modular resolvers directory)
+│   └── ...
+└── ...
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+</li>
+<li data-sourcepos="31:1-75:0">
+<p data-sourcepos="31:5-32:112"><strong>Individual Schema Files (e.g., <code>user.schema.js</code>):</strong>
+Each file will define the types, queries, mutations, and potentially inputs related to that specific entity.</p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-120 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-120 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><div _ngcontent-ng-c564991203="" class="code-block-decoration header-formatted gds-title-s ng-tns-c564991203-120 ng-star-inserted" style=""><span _ngcontent-ng-c564991203="" class="ng-tns-c564991203-120">JavaScript</span><div _ngcontent-ng-c564991203="" class="buttons ng-tns-c564991203-120 ng-star-inserted"><button _ngcontent-ng-c564991203="" aria-label="Copy code" mat-icon-button="" mattooltip="Copy code" class="mdc-icon-button mat-mdc-icon-button mat-mdc-button-base mat-mdc-tooltip-trigger copy-button ng-tns-c564991203-120 mat-unthemed ng-star-inserted" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" mat-ripple-loader-centered="" jslog="179062;track:generic_click,impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]];mutable:true"><span class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"></span><mat-icon _ngcontent-ng-c564991203="" role="img" fonticon="content_copy" class="mat-icon notranslate google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="content_copy"></mat-icon><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button><!----><!----><!----></div><!----></div><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-120"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-120"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-120"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-120" data-sourcepos="34:5-73:6"><span class="hljs-comment">// src/graphql/schemas/user.schema.js</span>
+<span class="hljs-keyword">const</span> { gql } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'apollo-server-express'</span>);
+
+<span class="hljs-built_in">module</span>.exports = gql<span class="hljs-string">`
+  type User {
+    id: ID!
+    username: String!
+    email: String
+    # Add other user-specific fields
+    posts: [Post!] # Example of a relationship
+  }
+
+  # Inputs for mutations often mirror parts of the type
+  input CreateUserInput {
+    username: String!
+    email: String!
+    # other required fields for creation
+  }
+
+  input UpdateUserInput {
+    username: String
+    email: String
+    # other fields for update
+  }
+
+  # It's good practice to extend Query and Mutation types
+  # This allows merging without explicitly naming them in each file
+  <span class="citation-62">extend type Query {
+    user(id: ID!): User
+    users: [</span><span class="citation-61 citation-62 citation-end-62">User!]
+  }
+
+  extend type Mutation {
+    createUser(input: CreateUserInput!): User
+    updateUser(id: ID!, input: UpdateUserInput!): User</span><span class="citation-61 citation-end-61">
+    deleteUser(id: ID!): Boolean</span> # Or return the deleted User
+  }
+`</span>;
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+<ul data-sourcepos="74:5-75:0">
+<li data-sourcepos="74:5-75:0"><strong><code>extend type Query</code> and <code>extend type Mutation</code>:</strong> This is crucial. By using <code>extend</code>, you tell GraphQL that you're adding fields to the existing root <code>Query</code> and <code>Mutation</code> types. If you just wrote <code>type Query { ... }</code> in each file, you'd be trying to redefine <code>Query</code> multiple times, leading to errors. You'll need a base definition for <code>Query</code> and <code>Mutation</code> somewhere.</li>
+</ul>
+</li>
+<li data-sourcepos="76:1-115:0">
+<p data-sourcepos="76:5-77:203"><strong>Combining Schemas (<code>schemas/index.js</code>):</strong>
+You'll need a root schema definition that might just contain the base <code>Query</code> and <code>Mutation</code> types (and potentially any shared scalar types), and then you'll import and combine all the modular parts.</p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-121 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-121 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><div _ngcontent-ng-c564991203="" class="code-block-decoration header-formatted gds-title-s ng-tns-c564991203-121 ng-star-inserted" style=""><span _ngcontent-ng-c564991203="" class="ng-tns-c564991203-121">JavaScript</span><div _ngcontent-ng-c564991203="" class="buttons ng-tns-c564991203-121 ng-star-inserted"><button _ngcontent-ng-c564991203="" aria-label="Copy code" mat-icon-button="" mattooltip="Copy code" class="mdc-icon-button mat-mdc-icon-button mat-mdc-button-base mat-mdc-tooltip-trigger copy-button ng-tns-c564991203-121 mat-unthemed ng-star-inserted" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" mat-ripple-loader-centered="" jslog="179062;track:generic_click,impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]];mutable:true"><span class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"></span><mat-icon _ngcontent-ng-c564991203="" role="img" fonticon="content_copy" class="mat-icon notranslate google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="content_copy"></mat-icon><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button><!----><!----><!----></div><!----></div><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-121"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-121"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-121"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-121" data-sourcepos="79:5-113:98"><span class="hljs-comment">// src/graphql/schemas/index.js</span>
+<span class="hljs-keyword">const</span> { gql } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'apollo-server-express'</span>);
+<span class="hljs-keyword">const</span> userSchema = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./user.schema'</span>);
+<span class="hljs-keyword">const</span> postSchema = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./post.schema'</span>);
+<span class="hljs-keyword">const</span> commentSchema = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./comment.schema'</span>);
+<span class="hljs-comment">// ... import other schemas</span>
+
+<span class="hljs-comment">// Base schema definition (important for 'extend' to work)</span>
+<span class="hljs-comment">// This can also be a good place for any global types or interfaces.</span>
+<span class="hljs-keyword">const</span> linkSchema = gql<span class="hljs-string">`
+  type Query {
+    _empty: String # Placeholder, Apollo Server needs at least one field in Query.
+                   # This will be extended by your modular schemas.
+  }
+
+  type Mutation {
+    _empty: String # Placeholder, will be extended.
+  }
+
+  # You might also define common scalar types or interfaces here
+  # scalar DateTime
+`</span>;
+
+<span class="hljs-comment">// Array of all your schema parts</span>
+<span class="hljs-keyword">const</span> typeDefs = [
+    linkSchema,
+    userSchema,
+    postSchema,
+    commentSchema,
+    <span class="hljs-comment">// ... add other imported schemas here</span>
+];
+
+<span class="hljs-built_in">module</span>.exports = typeDefs; <span class="hljs-comment">// This will be an array of gql tagged template literals or strings</span>
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+<p data-sourcepos="114:5-114:112">Apollo Server (and <code>graphql-tools</code>) can accept an array of type definition strings/ASTs and will merge them.</p>
+</li>
+</ol><p data-sourcepos="116:1-116:25"><strong>II. Modular Resolvers</strong></p><p data-sourcepos="118:1-118:58">Similar to schemas, you'll break down resolvers by domain.</p><ol data-sourcepos="120:1-228:0">
+<li data-sourcepos="120:1-134:0">
+<p data-sourcepos="120:5-120:28"><strong>Directory Structure:</strong></p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-122 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-122 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-122"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-122"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-122"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-122 no-decoration-radius" data-sourcepos="121:5-133:11">src/
+├── graphql/
+│   ├── schemas/
+│   │   └── ...
+│   ├── resolvers/               # Directory for modular resolvers
+│   │   ├── user.resolvers.js
+│   │   ├── post.resolvers.js
+│   │   ├── comment.resolvers.js
+│   │   └── index.js             # To combine all resolver objects
+│   └── ...
+└── ...
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+</li>
+<li data-sourcepos="135:1-187:0">
+<p data-sourcepos="135:5-136:137"><strong>Individual Resolver Files (e.g., <code>user.resolvers.js</code>):</strong>
+Each file will contain the resolver functions for the queries, mutations, and type fields defined in its corresponding schema module.</p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-123 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-123 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><div _ngcontent-ng-c564991203="" class="code-block-decoration header-formatted gds-title-s ng-tns-c564991203-123 ng-star-inserted" style=""><span _ngcontent-ng-c564991203="" class="ng-tns-c564991203-123">JavaScript</span><div _ngcontent-ng-c564991203="" class="buttons ng-tns-c564991203-123 ng-star-inserted"><button _ngcontent-ng-c564991203="" aria-label="Copy code" mat-icon-button="" mattooltip="Copy code" class="mdc-icon-button mat-mdc-icon-button mat-mdc-button-base mat-mdc-tooltip-trigger copy-button ng-tns-c564991203-123 mat-unthemed ng-star-inserted" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" mat-ripple-loader-centered="" jslog="179062;track:generic_click,impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]];mutable:true"><span class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"></span><mat-icon _ngcontent-ng-c564991203="" role="img" fonticon="content_copy" class="mat-icon notranslate google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="content_copy"></mat-icon><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button><!----><!----><!----></div><!----></div><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-123"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-123"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-123"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-123" data-sourcepos="138:5-186:6"><span class="hljs-comment">// src/graphql/resolvers/user.resolvers.js</span>
+<span class="hljs-keyword">const</span> { AppDataSource } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../../config/data-source'</span>); <span class="hljs-comment">// Adjust path as needed</span>
+<span class="hljs-keyword">const</span> UserEntity = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../../entities/User'</span>); <span class="hljs-comment">// Adjust path</span>
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">Query</span>: {
+    <span class="hljs-attr">user</span>: <span class="hljs-keyword">async</span> (_, { id }) =&gt; {
+      <span class="hljs-keyword">const</span> userRepository = AppDataSource.getRepository(UserEntity.options.name);
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> userRepository.findOneBy({ <span class="hljs-attr">id</span>: <span class="hljs-built_in">parseInt</span>(id) });
+    },
+    <span class="hljs-attr">users</span>: <span class="hljs-keyword">async</span> () =&gt; {
+      <span class="hljs-keyword">const</span> userRepository = AppDataSource.getRepository(UserEntity.options.name);
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> userRepository.find();
+    },
+  },
+  <span class="hljs-attr">Mutation</span>: {
+    <span class="hljs-attr">createUser</span>: <span class="hljs-keyword">async</span> (_, { input }) =&gt; {
+      <span class="hljs-keyword">const</span> userRepository = AppDataSource.getRepository(UserEntity.options.name);
+      <span class="hljs-keyword">const</span> newUser = userRepository.create(input); <span class="hljs-comment">// input will be { username, email }</span>
+      <span class="hljs-keyword">await</span> userRepository.save(newUser);
+      <span class="hljs-keyword">return</span> newUser;
+    },
+    <span class="hljs-attr">updateUser</span>: <span class="hljs-keyword">async</span> (_, { id, input }) =&gt; {
+      <span class="hljs-keyword">const</span> userRepository = AppDataSource.getRepository(UserEntity.options.name);
+      <span class="hljs-comment">// Fetch user, update, save. Handle not found cases.</span>
+      <span class="hljs-keyword">let</span> user = <span class="hljs-keyword">await</span> userRepository.findOneBy({ <span class="hljs-attr">id</span>: <span class="hljs-built_in">parseInt</span>(id) });
+      <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'User not found'</span>);
+      <span class="hljs-built_in">Object</span>.assign(user, input); <span class="hljs-comment">// Apply partial updates</span>
+      <span class="hljs-keyword">await</span> userRepository.save(user);
+      <span class="hljs-keyword">return</span> user;
+    },
+    <span class="hljs-attr">deleteUser</span>: <span class="hljs-keyword">async</span> (_, { id }) =&gt; {
+      <span class="hljs-keyword">const</span> userRepository = AppDataSource.getRepository(UserEntity.options.name);
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> userRepository.delete(<span class="hljs-built_in">parseInt</span>(id));
+      <span class="hljs-keyword">return</span> result.affected &gt; <span class="hljs-number">0</span>; <span class="hljs-comment">// Returns true if a row was deleted</span>
+    },
+  },
+  <span class="hljs-comment">// If User type has fields that need custom resolution (e.g., computed fields or complex relations)</span>
+  <span class="hljs-attr">User</span>: {
+    <span class="hljs-comment">// Example: if 'posts' on User type wasn't directly on the entity or needed special fetching</span>
+    <span class="hljs-comment">// posts: async (parentUser) =&gt; {</span>
+    <span class="hljs-comment">//   // parentUser is the resolved User object from a higher-level query</span>
+    <span class="hljs-comment">//   const postRepository = AppDataSource.getRepository(PostEntity.options.name);</span>
+    <span class="hljs-comment">//   return await postRepository.findBy({ authorId: parentUser.id });</span>
+    <span class="hljs-comment">// },</span>
+  },
+};
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+</li>
+<li data-sourcepos="188:1-228:0">
+<p data-sourcepos="188:5-189:132"><strong>Combining Resolvers (<code>resolvers/index.js</code>):</strong>
+You'll import all your modular resolver objects and merge them. <code>lodash.merge</code> is often used for a deep merge, which is helpful.</p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-124 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-124 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><div _ngcontent-ng-c564991203="" class="code-block-decoration header-formatted gds-title-s ng-tns-c564991203-124 ng-star-inserted" style=""><span _ngcontent-ng-c564991203="" class="ng-tns-c564991203-124">JavaScript</span><div _ngcontent-ng-c564991203="" class="buttons ng-tns-c564991203-124 ng-star-inserted"><button _ngcontent-ng-c564991203="" aria-label="Copy code" mat-icon-button="" mattooltip="Copy code" class="mdc-icon-button mat-mdc-icon-button mat-mdc-button-base mat-mdc-tooltip-trigger copy-button ng-tns-c564991203-124 mat-unthemed ng-star-inserted" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" mat-ripple-loader-centered="" jslog="179062;track:generic_click,impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]];mutable:true"><span class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"></span><mat-icon _ngcontent-ng-c564991203="" role="img" fonticon="content_copy" class="mat-icon notranslate google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="content_copy"></mat-icon><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button><!----><!----><!----></div><!----></div><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-124"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-124"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-124"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-124" data-sourcepos="191:5-209:31"><span class="hljs-comment">// src/graphql/resolvers/index.js</span>
+<span class="hljs-keyword">const</span> { merge } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>); <span class="hljs-comment">// A popular utility for deep merging</span>
+<span class="hljs-keyword"><span class="citation-60">const</span></span><span class="citation-60"> userResolvers = </span><span class="hljs-built_in"><span class="citation-60">require</span></span><span class="citation-60">(</span><span class="hljs-string"><span class="citation-60">'./user.resolvers'</span></span><span class="citation-60">);
+</span><span class="hljs-keyword"><span class="citation-60">const</span></span><span class="citation-60"> postResolvers = </span><span class="hljs-built_in"><span class="citation-60">require</span></span><span class="citation-60">(</span><span class="hljs-string"><span class="citation-60">'./post.resolvers'</span></span><span class="citation-60">);
+</span><span class="hljs-keyword"><span class="citation-60">const</span></span><span class="citation-60"> commentResolvers = </span><span class="hljs-built_in"><span class="citation-60">require</span></span><span class="citation-60">(</span><span class="hljs-string"><span class="citation-60">'./comment.resolvers'</span></span><span class="citation-60 citation-end-60">);</span>
+<span class="hljs-comment">// ... import other resolvers</span>
+
+<span class="hljs-comment">// Merge all resolver objects. Lodash's merge does a deep merge.</span>
+<span class="hljs-keyword">const</span> resolvers = merge(
+    {}, <span class="hljs-comment">// Start with an empty object for a clean merge</span>
+    userResolvers,
+    postResolvers,
+    commentResolvers,
+    <span class="hljs-comment">// ... add other imported resolvers here</span>
+);
+
+<span class="hljs-built_in">module</span>.exports = resolvers;
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+<p data-sourcepos="210:5-210:153">If you don't want to use <code>lodash.merge</code>, you can also spread them manually, but be careful with deeply nested structures like <code>Query</code> and <code>Mutation</code>:</p>
+<response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-125 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-125 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><div _ngcontent-ng-c564991203="" class="code-block-decoration header-formatted gds-title-s ng-tns-c564991203-125 ng-star-inserted" style=""><span _ngcontent-ng-c564991203="" class="ng-tns-c564991203-125">JavaScript</span><div _ngcontent-ng-c564991203="" class="buttons ng-tns-c564991203-125 ng-star-inserted"><button _ngcontent-ng-c564991203="" aria-label="Copy code" mat-icon-button="" mattooltip="Copy code" class="mdc-icon-button mat-mdc-icon-button mat-mdc-button-base mat-mdc-tooltip-trigger copy-button ng-tns-c564991203-125 mat-unthemed ng-star-inserted" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" mat-ripple-loader-centered="" jslog="179062;track:generic_click,impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]];mutable:true"><span class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"></span><mat-icon _ngcontent-ng-c564991203="" role="img" fonticon="content_copy" class="mat-icon notranslate google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="content_copy"></mat-icon><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button><!----><!----><!----></div><!----></div><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-125"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-125"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-125"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-125" data-sourcepos="212:5-226:9"><span class="hljs-comment">// Manual merge example (simpler, but less robust for deep structures than lodash.merge)</span>
+<span class="hljs-comment">// <span class="citation-59">const resolvers = {</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//   Query: {</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//     ...userResolvers.Query,</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//     ...postResolvers.Query,</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//   },</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//   Mutation: {</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//     ...userResolvers.Mutation,</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//     ...postResolvers.Mutation,</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59">//   },</span></span><span class="citation-59">
+</span><span class="hljs-comment"><span class="citation-59 citation-end-59">//   User: { ...userResolvers.User</span> }, // if you have type-specific resolvers</span>
+<span class="hljs-comment">//   Post: { ...postResolvers.Post },</span>
+<span class="hljs-comment">// };</span>
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element>
+<p data-sourcepos="227:5-227:85"><code>lodash.merge</code> is generally safer as it handles merging nested objects correctly.</p>
+</li>
+</ol><p data-sourcepos="229:1-229:29"><strong>III. Updating <code>server.js</code></strong></p><p data-sourcepos="231:1-231:85">Your main server setup file will then import the combined <code>typeDefs</code> and <code>resolvers</code>.</p><response-element class="" ng-version="0.0.0-PLACEHOLDER"><!----><!----><!----><!----><!----><!----><!----><code-block _nghost-ng-c564991203="" class="ng-tns-c564991203-126 ng-star-inserted" style=""><!----><!----><div _ngcontent-ng-c564991203="" class="code-block ng-tns-c564991203-126 ng-trigger ng-trigger-codeBlockRevealAnimation" jslog="223238;track:impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]]" style="display: block;"><div _ngcontent-ng-c564991203="" class="code-block-decoration header-formatted gds-title-s ng-tns-c564991203-126 ng-star-inserted" style=""><span _ngcontent-ng-c564991203="" class="ng-tns-c564991203-126">JavaScript</span><div _ngcontent-ng-c564991203="" class="buttons ng-tns-c564991203-126 ng-star-inserted"><button _ngcontent-ng-c564991203="" aria-label="Copy code" mat-icon-button="" mattooltip="Copy code" class="mdc-icon-button mat-mdc-icon-button mat-mdc-button-base mat-mdc-tooltip-trigger copy-button ng-tns-c564991203-126 mat-unthemed ng-star-inserted" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" mat-ripple-loader-centered="" jslog="179062;track:generic_click,impression;BardVeMetadataKey:[[&quot;r_81ee9ac4988ee10f&quot;,&quot;c_b9928954e1d651be&quot;,null,&quot;rc_5ea3ebe87b455fe0&quot;,null,null,&quot;en&quot;,null,null,null,null,1,1]];mutable:true"><span class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"></span><mat-icon _ngcontent-ng-c564991203="" role="img" fonticon="content_copy" class="mat-icon notranslate google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="content_copy"></mat-icon><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button><!----><!----><!----></div><!----></div><!----><div _ngcontent-ng-c564991203="" class="formatted-code-block-internal-container ng-tns-c564991203-126"><div _ngcontent-ng-c564991203="" class="animated-opacity ng-tns-c564991203-126"><pre _ngcontent-ng-c564991203="" class="ng-tns-c564991203-126"><code _ngcontent-ng-c564991203="" role="text" data-test-id="code-content" class="code-container formatted ng-tns-c564991203-126" data-sourcepos="233:1-254:14"><span class="hljs-comment">// src/server.js</span>
+<span class="hljs-comment">// ... other imports</span>
+<span class="hljs-keyword">const</span> { ApolloServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'apollo-server-express'</span>);
+<span class="hljs-keyword">const</span> typeDefs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./graphql/schemas'</span>); <span class="hljs-comment">// Points to schemas/index.js</span>
+<span class="hljs-keyword">const</span> resolvers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./graphql/resolvers'</span>); <span class="hljs-comment">// Points to resolvers/index.js</span>
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startServer</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-comment">// ... DB Init ...</span>
+
+  <span class="hljs-keyword">const</span> server = <span class="hljs-keyword">new</span> ApolloServer({
+    typeDefs,  <span class="hljs-comment">// This is now an array of schema definitions</span>
+    resolvers, <span class="hljs-comment">// This is your merged resolver object</span>
+    <span class="hljs-comment">// context, etc.</span>
+  });
+
+  <span class="hljs-comment">// ... rest of server setup</span>
+}
+
+startServer();
+</code></pre><!----><!----><!----></div></div></div><!----><!----><!----></code-block><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element><p data-sourcepos="256:1-256:155">This modular approach is very powerful and is the standard way to build larger GraphQL APIs. It keeps your codebase clean, organized, and ready for growth!</p></div></message-content><!----><!----><div _ngcontent-ng-c1963131789="" class="response-footer complete has-thoughts gap"><!----><!----><!----><sources-list _ngcontent-ng-c1963131789="" class="sources-list ng-star-inserted" style=""><overview-carousel _nghost-ng-c1489650596="" class="ng-star-inserted"><!----><sources-sidebar-button _ngcontent-ng-c1489650596="" _nghost-ng-c468519819="" class="ng-star-inserted"><button _ngcontent-ng-c468519819="" mat-stroked-button="" class="mdc-button mat-mdc-button-base sources-sidebar-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed" mat-ripple-loader-uninitialized="" mat-ripple-loader-class-name="mat-mdc-button-ripple" jslog="262207;track:generic_click,impression"><span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><mat-icon _ngcontent-ng-c468519819="" role="img" fonticon="link" class="mat-icon notranslate sources-sidebar-button-icon google-symbols mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font" data-mat-icon-name="link"></mat-icon><span class="mdc-button__label"> Sources
+</span><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span></button></sources-sidebar-button><!----><!----><!----></overview-carousel><!----></sources-list><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></div></div>
