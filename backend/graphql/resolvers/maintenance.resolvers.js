@@ -1,93 +1,170 @@
-const { AppDataSource } = require('../../config/data-source');
+const AppDataSource = require('../../config/typeorm.config');
+const MaintenanceRequest = require('../../entity/MaintenanceRequest');
+const MaintenanceStaff = require('../../entity/MaintenanceStaff');
+const Apartment = require('../../entity/Apartment');
+const Resident = require('../../entity/Resident');
 
-const maintenanceResolvers = {
-  Query: {
-    maintenanceTicket: async (_, { id }) => {
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      return await ticketRepo.findOne({
-        where: { id },
-        relations: ['apartment', 'worksOn', 'worksOn.maintenanceStaff']
-      });
+module.exports = {
+    Query: {
+        maintenanceRequest: async (_, { requestId }) => {
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.assignedStaff', 'staff')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .where('request.requestId = :requestId', { requestId })
+                .getOne();
+        },
+        maintenanceRequests: async () => {
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.assignedStaff', 'staff')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .orderBy('request.dateSubmitted', 'DESC')
+                .getMany();
+        },
+        maintenanceRequestsByApartment: async (_, { apartmentId }) => {
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.assignedStaff', 'staff')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .where('request.apartmentId = :apartmentId', { apartmentId })
+                .orderBy('request.dateSubmitted', 'DESC')
+                .getMany();
+        },
+        maintenanceStaff: async (_, { staffId }) => {
+            return await AppDataSource
+                .getRepository(MaintenanceStaff)
+                .createQueryBuilder('staff')
+                .leftJoinAndSelect('staff.person', 'person')
+                .leftJoinAndSelect('staff.assignedRequests', 'requests')
+                .where('staff.staffId = :staffId', { staffId })
+                .getOne();
+        },
+        maintenanceStaffList: async () => {
+            return await AppDataSource
+                .getRepository(MaintenanceStaff)
+                .createQueryBuilder('staff')
+                .leftJoinAndSelect('staff.person', 'person')
+                .leftJoinAndSelect('staff.assignedRequests', 'requests')
+                .orderBy('person.lastName', 'ASC')
+                .addOrderBy('person.firstName', 'ASC')
+                .getMany();
+        }
     },
-    maintenanceTickets: async (_, { status, apartmentId }) => {
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      const query = ticketRepo.createQueryBuilder('ticket')
-        .leftJoinAndSelect('ticket.apartment', 'apartment')
-        .leftJoinAndSelect('ticket.worksOn', 'worksOn')
-        .leftJoinAndSelect('worksOn.maintenanceStaff', 'staff');
 
-      if (status) {
-        query.andWhere('ticket.status = :status', { status });
-      }
-      
-      if (apartmentId) {
-        query.andWhere('apartment.id = :apartmentId', { apartmentId });
-      }
+    Mutation: {
+        createMaintenanceRequest: async (_, { input }) => {
+            const maintenanceRequestRepository = AppDataSource.getRepository(MaintenanceRequest);
+            const request = maintenanceRequestRepository.create({
+                ...input,
+                dateSubmitted: new Date(),
+                status: 'PENDING'
+            });
+            return await maintenanceRequestRepository.save(request);
+        },
+        updateMaintenanceRequest: async (_, { requestId, input }) => {
+            await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .update({ requestId }, input);
 
-      return await query.getMany();
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.assignedStaff', 'staff')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .where('request.requestId = :requestId', { requestId })
+                .getOne();
+        },
+        assignMaintenanceStaff: async (_, { requestId, staffId }) => {
+            await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .update({ requestId }, { 
+                    staffId,
+                    status: 'ASSIGNED',
+                    dateAssigned: new Date()
+                });
+
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.assignedStaff', 'staff')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .where('request.requestId = :requestId', { requestId })
+                .getOne();
+        },
+        completeMaintenanceRequest: async (_, { requestId, completionNotes }) => {
+            await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .update({ requestId }, {
+                    status: 'COMPLETED',
+                    dateCompleted: new Date(),
+                    completionNotes
+                });
+
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.assignedStaff', 'staff')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .where('request.requestId = :requestId', { requestId })
+                .getOne();
+        }
     },
-    maintenanceStaffList: async () => {
-      const staffRepo = AppDataSource.getRepository('MaintenanceStaff');
-      return await staffRepo.find({
-        relations: ['employee', 'employee.person', 'worksOn', 'worksOn.maintenanceTicket']
-      });
+
+    MaintenanceRequest: {
+        apartment: async (request) => {
+            return await AppDataSource
+                .getRepository(Apartment)
+                .createQueryBuilder('apartment')
+                .leftJoinAndSelect('apartment.complex', 'complex')
+                .where('apartment.apartmentId = :apartmentId', { apartmentId: request.apartmentId })
+                .getOne();
+        },
+        resident: async (request) => {
+            return await AppDataSource
+                .getRepository(Resident)
+                .createQueryBuilder('resident')
+                .leftJoinAndSelect('resident.person', 'person')
+                .where('resident.residentSsn = :residentSsn', { residentSsn: request.residentSsn })
+                .getOne();
+        },
+        assignedStaff: async (request) => {
+            if (!request.staffId) return null;
+            return await AppDataSource
+                .getRepository(MaintenanceStaff)
+                .createQueryBuilder('staff')
+                .leftJoinAndSelect('staff.person', 'person')
+                .where('staff.staffId = :staffId', { staffId: request.staffId })
+                .getOne();
+        }
     },
-    maintenanceStaffMember: async (_, { maintenanceEmpSsn, shiftDate }) => {
-      const staffRepo = AppDataSource.getRepository('MaintenanceStaff');
-      return await staffRepo.findOne({
-        where: { maintenanceEmpSsn, shiftDate },
-        relations: ['employee', 'employee.person', 'worksOn', 'worksOn.maintenanceTicket']
-      });
+
+    MaintenanceStaff: {
+        person: async (staff) => {
+            return await AppDataSource
+                .getRepository('Person')
+                .createQueryBuilder('person')
+                .where('person.ssn = :ssn', { ssn: staff.personSsn })
+                .getOne();
+        },
+        assignedRequests: async (staff) => {
+            return await AppDataSource
+                .getRepository(MaintenanceRequest)
+                .createQueryBuilder('request')
+                .leftJoinAndSelect('request.apartment', 'apartment')
+                .leftJoinAndSelect('request.resident', 'resident')
+                .where('request.staffId = :staffId', { staffId: staff.staffId })
+                .orderBy('request.dateSubmitted', 'DESC')
+                .getMany();
+        }
     }
-  },
-  Mutation: {
-    createMaintenanceTicket: async (_, { input }) => {
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      const ticket = ticketRepo.create(input);
-      return await ticketRepo.save(ticket);
-    },
-    updateTicketStatus: async (_, { id, status }) => {
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      await ticketRepo.update(id, { status });
-      return await ticketRepo.findOne({ where: { id } });
-    },
-    assignMaintenanceStaff: async (_, { ticketId, staffId }) => {
-      const worksOnRepo = AppDataSource.getRepository('WorksOn');
-      const worksOn = worksOnRepo.create({
-        maintenanceTicketId: ticketId,
-        maintenanceStaffId: staffId,
-        assignedDate: new Date()
-      });
-      await worksOnRepo.save(worksOn);
-      
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      return await ticketRepo.findOne({
-        where: { id: ticketId },
-        relations: ['worksOn', 'worksOn.maintenanceStaff']
-      });
-    }
-  },
-  // Type resolvers
-  MaintenanceTicket: {
-    apartment: async (ticket) => {
-      if (ticket.apartment) return ticket.apartment;
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      const fullTicket = await ticketRepo.findOne({
-        where: { id: ticket.id },
-        relations: ['apartment']
-      });
-      return fullTicket?.apartment;
-    },
-    assignedStaff: async (ticket) => {
-      if (ticket.worksOn) return ticket.worksOn.map(w => w.maintenanceStaff);
-      const ticketRepo = AppDataSource.getRepository('MaintenanceTicket');
-      const fullTicket = await ticketRepo.findOne({
-        where: { id: ticket.id },
-        relations: ['worksOn', 'worksOn.maintenanceStaff']
-      });
-      return fullTicket?.worksOn?.map(w => w.maintenanceStaff) || [];
-    }
-  }
-};
-
-module.exports = maintenanceResolvers; 
+}; 
