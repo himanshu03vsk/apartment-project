@@ -41,7 +41,7 @@ module.exports = gql`
     specialty: MaintenanceSpecialty!
     shift: MaintenanceShift!
     employee: Employee!
-    worksOnTickets: [WorksOn!]
+    assignedTickets: [MaintenanceTicket!]
   }
 
   enum OfficeShift {

@@ -40,8 +40,8 @@ const { expressMiddleware } = require('@apollo/server/express4');
 
 const { AppDataSource } = require('./config/data-source');
 // You'll create these files:
-const typeDefs = require('./graphql/schemas/index');         // <--- New: GraphQL Schema
-const resolvers = require('./graphql/resolvers/index');     // <--- New: GraphQL Resolvers
+const typeDefs = require('./graphql/schemas/index.schema');         // <--- New: GraphQL Schema
+const resolvers = require('./graphql/resolvers/index.resolvers');     // <--- New: GraphQL Resolvers
 // const userRoutes = require('./routes/userRoutes'); // <--- This would be largely replaced by resolvers
 
 async function startServer() {

@@ -80,17 +80,17 @@ module.exports = {
                 .orderBy('apartment.apartmentNumber', 'ASC')
                 .getMany();
         },
-        occupancyRate: async (building) => {
-            const apartments = await AppDataSource
-                .getRepository(Apartment)
-                .createQueryBuilder('apartment')
-                .leftJoinAndSelect('apartment.currentLease', 'currentLease')
-                .where('apartment.buildingId = :buildingId', { buildingId: building.buildingId })
-                .getMany();
+        // occupancyRate: async (building) => {
+        //     const apartments = await AppDataSource
+        //         .getRepository(Apartment)
+        //         .createQueryBuilder('apartment')
+        //         .leftJoinAndSelect('apartment.currentLease', 'currentLease')
+        //         .where('apartment.buildingId = :buildingId', { buildingId: building.buildingId })
+        //         .getMany();
 
-            const occupiedCount = apartments.filter(apt => apt.currentLease && apt.currentLease.status === 'ACTIVE').length;
-            return apartments.length > 0 ? (occupiedCount / apartments.length) * 100 : 0;
-        },
+        //     const occupiedCount = apartments.filter(apt => apt.currentLease && apt.currentLease.status === 'ACTIVE').length;
+        //     return apartments.length > 0 ? (occupiedCount / apartments.length) * 100 : 0;
+        // },
         femaLetters: async (building) => {
             const femaLetterRepository = AppDataSource.getRepository(FemaLetter);
             return await femaLetterRepository.find({ 

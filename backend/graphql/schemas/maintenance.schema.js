@@ -2,26 +2,25 @@ const { gql } = require('graphql-tag');
 
 module.exports = gql`
   type MaintenanceTicket {
-    ticketId: String!
-    apartmentId: String!
-    residentSsn: String!
-    description: String!
-    priority: Priority!
-    status: Status!
-    submissionDate: Date!
-    completionDate: Date
+    ticketId: ID!
     apartment: Apartment!
     resident: Resident!
-    worksOnTickets: [WorksOn!]
+    assignedStaff: MaintenanceStaff
+    description: String!
+    status: TicketStatus!
+    priority: Priority!
+    dateSubmitted: Date!
+    dateAssigned: Date
+    dateCompleted: Date
+    completionNotes: String
   }
 
-  type WorksOn {
-    ticketId: String!
-    maintenanceEmpSsn: String!
-    startDate: Date!
-    endDate: Date
-    maintenanceStaff: MaintenanceStaff!
-    maintenanceTicket: MaintenanceTicket!
+  type MaintenanceStaff {
+    staffId: ID!
+    person: Person!
+    assignedTickets: [MaintenanceTicket!]!
+    specialization: String
+    certification: String
   }
 
   enum Priority {
@@ -31,51 +30,32 @@ module.exports = gql`
     EMERGENCY
   }
 
-  enum Status {
+  enum TicketStatus {
     PENDING
-    IN_PROGRESS
+    ASSIGNED
     COMPLETED
     CANCELLED
   }
 
   input MaintenanceTicketInput {
-    apartmentId: String!
+    apartmentId: ID!
     residentSsn: String!
     description: String!
     priority: Priority!
   }
 
-  input MaintenanceTicketUpdateInput {
-    description: String
-    priority: Priority
-    status: Status
-    completionDate: Date
-  }
-
-  input WorksOnInput {
-    ticketId: String!
-    maintenanceEmpSsn: String!
-    startDate: Date!
-    endDate: Date
-  }
-
   extend type Query {
-    maintenanceTicket(ticketId: String!): MaintenanceTicket
+    maintenanceTicket(ticketId: ID!): MaintenanceTicket
     maintenanceTickets: [MaintenanceTicket!]!
-    maintenanceTicketsByApartment(apartmentId: String!): [MaintenanceTicket!]!
-    maintenanceTicketsByResident(residentSsn: String!): [MaintenanceTicket!]!
-    maintenanceTicketsByStatus(status: Status!): [MaintenanceTicket!]!
-    maintenanceTicketsByPriority(priority: Priority!): [MaintenanceTicket!]!
-    worksOnByTicket(ticketId: String!): [WorksOn!]!
-    worksOnByStaff(maintenanceEmpSsn: String!): [WorksOn!]!
+    maintenanceTicketsByApartment(apartmentId: ID!): [MaintenanceTicket!]!
+    maintenanceStaff(staffId: ID!): MaintenanceStaff
+    maintenanceStaffList: [MaintenanceStaff!]!
   }
 
   extend type Mutation {
     createMaintenanceTicket(input: MaintenanceTicketInput!): MaintenanceTicket!
-    updateMaintenanceTicket(ticketId: String!, input: MaintenanceTicketUpdateInput!): MaintenanceTicket!
-    deleteMaintenanceTicket(ticketId: String!): Boolean!
-    assignMaintenanceStaff(input: WorksOnInput!): WorksOn!
-    updateWorkAssignment(ticketId: String!, maintenanceEmpSsn: String!, input: WorksOnInput!): WorksOn!
-    removeWorkAssignment(ticketId: String!, maintenanceEmpSsn: String!): Boolean!
+    updateMaintenanceTicket(ticketId: ID!, input: MaintenanceTicketInput!): MaintenanceTicket!
+    assignMaintenanceStaff(ticketId: ID!, staffId: ID!): MaintenanceTicket!
+    completeMaintenanceTicket(ticketId: ID!, completionNotes: String!): MaintenanceTicket!
   }
 `; 

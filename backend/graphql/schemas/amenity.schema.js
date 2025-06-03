@@ -3,6 +3,7 @@ const { gql } = require('graphql-tag');
 module.exports = gql`
   type Amenity {
     amenityType: String!
+    providedTo: [Provides!]
   }
 
   input AmenityInput {
@@ -13,6 +14,7 @@ module.exports = gql`
   extend type Query {
     amenity(amenityType: String!): Amenity
     amenities: [Amenity!]!
+    amenitiesByComplex(complexId: String!): [Provides!]!
   }
 
   # Extend the existing Mutation type

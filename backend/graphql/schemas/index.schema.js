@@ -1,13 +1,13 @@
 const { gql } = require('graphql-tag');
-const personSchema = require('./person');
-const employeeSchema = require('./employee');
-const complexSchema = require('./complex');
-const buildingSchema = require('./building');
-const apartmentSchema = require('./apartment');
-const residentSchema = require('./resident');
-const parkingSchema = require('./parking');
-const maintenanceSchema = require('./maintenance');
-const amenitySchema = require('./amenity');
+const personSchema = require('./person.schema');
+const employeeSchema = require('./employee.schema');
+const complexSchema = require('./complex.schema');
+const buildingSchema = require('./building.schema');
+const apartmentSchema = require('./apartment.schema');
+const residentSchema = require('./resident.schema');
+const parkingSchema = require('./parking.schema');
+const maintenanceSchema = require('./maintenance.schema');
+const amenitySchema = require('./amenity.schema');
 
 const linkSchema = gql`
   scalar Date

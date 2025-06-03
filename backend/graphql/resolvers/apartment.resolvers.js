@@ -1,8 +1,8 @@
 const AppDataSource = require('../../config/typeorm.config');
 const Apartment = require('../../entity/Apartment');
 const Building = require('../../entity/Building');
-const Lease = require('../../entity/Lease');
-const MaintenanceRequest = require('../../entity/MaintenanceRequest');
+const Resident = require('../../entity/Resident');
+const MaintenanceTicket = require('../../entity/MaintenanceTicket');
 
 module.exports = {
     Query: {
@@ -12,8 +12,7 @@ module.exports = {
                 .createQueryBuilder('apartment')
                 .leftJoinAndSelect('apartment.building', 'building')
                 .leftJoinAndSelect('building.complex', 'complex')
-                .leftJoinAndSelect('apartment.currentLease', 'currentLease')
-                .leftJoinAndSelect('currentLease.resident', 'resident')
+                .leftJoinAndSelect('apartment.residents', 'residents')
                 .where('apartment.apartmentId = :apartmentId', { apartmentId })
                 .getOne();
         },
@@ -23,22 +22,19 @@ module.exports = {
                 .createQueryBuilder('apartment')
                 .leftJoinAndSelect('apartment.building', 'building')
                 .leftJoinAndSelect('building.complex', 'complex')
-                .leftJoinAndSelect('apartment.currentLease', 'currentLease')
-                .leftJoinAndSelect('currentLease.resident', 'resident')
+                .leftJoinAndSelect('apartment.residents', 'residents')
                 .orderBy('building.buildingNumber', 'ASC')
                 .addOrderBy('apartment.apartmentNumber', 'ASC')
                 .getMany();
         },
         availableApartments: async () => {
-            const currentDate = new Date();
             return await AppDataSource
                 .getRepository(Apartment)
                 .createQueryBuilder('apartment')
                 .leftJoinAndSelect('apartment.building', 'building')
                 .leftJoinAndSelect('building.complex', 'complex')
-                .leftJoinAndSelect('apartment.currentLease', 'currentLease')
-                .where('currentLease.leaseId IS NULL')
-                .orWhere('currentLease.endDate < :currentDate', { currentDate })
+                .leftJoinAndSelect('apartment.residents', 'residents')
+                .where('apartment.isAvailable = :isAvailable', { isAvailable: true })
                 .orderBy('building.buildingNumber', 'ASC')
                 .addOrderBy('apartment.apartmentNumber', 'ASC')
                 .getMany();
@@ -49,8 +45,7 @@ module.exports = {
                 .createQueryBuilder('apartment')
                 .leftJoinAndSelect('apartment.building', 'building')
                 .leftJoinAndSelect('building.complex', 'complex')
-                .leftJoinAndSelect('apartment.currentLease', 'currentLease')
-                .leftJoinAndSelect('currentLease.resident', 'resident')
+                .leftJoinAndSelect('apartment.residents', 'residents')
                 .where('apartment.buildingId = :buildingId', { buildingId })
                 .orderBy('apartment.apartmentNumber', 'ASC')
                 .getMany();
@@ -59,9 +54,13 @@ module.exports = {
 
     Mutation: {
         createApartment: async (_, { input }) => {
-            const apartmentRepository = AppDataSource.getRepository(Apartment);
-            const apartment = apartmentRepository.create(input);
-            return await apartmentRepository.save(apartment);
+            const apartment = AppDataSource
+                .getRepository(Apartment)
+                .create(input);
+            
+            return await AppDataSource
+                .getRepository(Apartment)
+                .save(apartment);
         },
         updateApartment: async (_, { apartmentId, input }) => {
             await AppDataSource
@@ -73,8 +72,7 @@ module.exports = {
                 .createQueryBuilder('apartment')
                 .leftJoinAndSelect('apartment.building', 'building')
                 .leftJoinAndSelect('building.complex', 'complex')
-                .leftJoinAndSelect('apartment.currentLease', 'currentLease')
-                .leftJoinAndSelect('currentLease.resident', 'resident')
+                .leftJoinAndSelect('apartment.residents', 'residents')
                 .where('apartment.apartmentId = :apartmentId', { apartmentId })
                 .getOne();
         },
@@ -95,35 +93,24 @@ module.exports = {
                 .where('building.buildingId = :buildingId', { buildingId: apartment.buildingId })
                 .getOne();
         },
-        currentLease: async (apartment) => {
-            const currentDate = new Date();
+        residents: async (apartment) => {
             return await AppDataSource
-                .getRepository(Lease)
-                .createQueryBuilder('lease')
-                .leftJoinAndSelect('lease.resident', 'resident')
-                .where('lease.apartmentId = :apartmentId', { apartmentId: apartment.apartmentId })
-                .andWhere('lease.startDate <= :currentDate', { currentDate })
-                .andWhere('lease.endDate >= :currentDate', { currentDate })
-                .andWhere('lease.status = :status', { status: 'ACTIVE' })
-                .getOne();
-        },
-        leaseHistory: async (apartment) => {
-            return await AppDataSource
-                .getRepository(Lease)
-                .createQueryBuilder('lease')
-                .leftJoinAndSelect('lease.resident', 'resident')
-                .where('lease.apartmentId = :apartmentId', { apartmentId: apartment.apartmentId })
-                .orderBy('lease.startDate', 'DESC')
+                .getRepository(Resident)
+                .createQueryBuilder('resident')
+                .leftJoinAndSelect('resident.person', 'person')
+                .where('resident.apartmentId = :apartmentId', { apartmentId: apartment.apartmentId })
+                .orderBy('person.lastName', 'ASC')
+                .addOrderBy('person.firstName', 'ASC')
                 .getMany();
         },
         maintenanceHistory: async (apartment) => {
             return await AppDataSource
-                .getRepository(MaintenanceRequest)
-                .createQueryBuilder('request')
-                .leftJoinAndSelect('request.assignedStaff', 'staff')
-                .leftJoinAndSelect('request.resident', 'resident')
-                .where('request.apartmentId = :apartmentId', { apartmentId: apartment.apartmentId })
-                .orderBy('request.dateSubmitted', 'DESC')
+                .getRepository(MaintenanceTicket)
+                .createQueryBuilder('ticket')
+                .leftJoinAndSelect('ticket.assignedStaff', 'staff')
+                .leftJoinAndSelect('ticket.resident', 'resident')
+                .where('ticket.apartmentId = :apartmentId', { apartmentId: apartment.apartmentId })
+                .orderBy('ticket.dateSubmitted', 'DESC')
                 .getMany();
         }
     }
